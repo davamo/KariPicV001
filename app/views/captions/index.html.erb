@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Captions</h1>
+
+<div id="captions">
+  <% @captions.each do |caption| %>
+    <%= render caption %>
+    <p>
+      <%= link_to "Show this caption", caption %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New caption", new_caption_path %>
