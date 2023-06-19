@@ -1,4 +1,8 @@
-<%= form_with(model: caption) do |form| %>
+<%#= form_with(model: caption, local: true) do |form| %>
+<%= form_with(model: @caption, url: captions_path, method: :post, multipart: true) do |form| %>
+
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
   <% if caption.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(caption.errors.count, "error") %> prohibited this caption from being saved:</h2>
@@ -12,18 +16,33 @@
   <% end %>
 
   <div>
-    <%= form.label :photo_id, style: "display: block" %>
-    <%= form.number_field :photo_id %>
+    <%#= form.label :photo_id, style: "display: block" %>
+    <%#= form.number_field :photo_id %>
   </div>
+
+  <div class="field">
+    <%= form.label :image %>
+   <%#= form.file_field :photo_images, multiple: true %>
+
+
+  <%= form.fields_for :photos do |photo_fields| %>
+    <%= photo_fields.file_field :image %>
+  <% end %>
+
+  </div>
+
+
+
+  <div class="field">
+    <%#= form.hidden_field :photo_id, value: @photo.id %>
+
+    <!--input type="file" name="caption[image]"-->
+  </div>
+
 
   <div>
     <%= form.label :text, style: "display: block" %>
     <%= form.text_field :text %>
-  </div>
-
-  <div>
-    <%= form.label :comment_id, style: "display: block" %>
-    <%= form.number_field :comment_id %>
   </div>
 
   <div>

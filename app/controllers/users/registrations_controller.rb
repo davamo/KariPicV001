@@ -3,6 +3,24 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  def create
+    @user = User.new(user_params)
+    @user.admin = params[:user][:admin] == "1" # Establecer admin como true si el checkbox está seleccionado
+
+    if @user.save
+      # Lógica adicional después de guardar el usuario exitosamente
+      redirect_to @user, notice: "Usuario creado exitosamente."
+    else
+      # Lógica adicional en caso de error al guardar el usuario
+      render :new
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :admin)
+  end
 
   # GET /resource/sign_up
   # def new

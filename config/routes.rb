@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   get 'home/index'
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
   }
+
   resources :comments, only: [:create, :edit, :update, :destroy]
 
   resources :captions do

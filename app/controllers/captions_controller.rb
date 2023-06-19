@@ -1,15 +1,14 @@
 class CaptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin, only: [:new, :create]
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_caption, only: [:show, :edit, :update, :destroy]
 
   def index
     @captions = Caption.all
   end
 
   def show
-    @comment = Comment.find(params[:id])
-    @comments = @comment.article.comments
+    @caption = Caption.find(params[:id])
   end
 
   def new
@@ -17,17 +16,13 @@ class CaptionsController < ApplicationController
   end
 
   def create
-    @caption = Comment.new(caption_params)
+    @caption = Caption.new(caption_params)
     @caption.user = current_user
-
     if @caption.save
-      redirect_to @caption, notice: 'caption was successfully created.'
+      redirect_to @caption, notice: 'Caption creado exitosamente.'
     else
       render :new
     end
-  end
-
-  def edit
   end
 
   def update
@@ -58,7 +53,7 @@ class CaptionsController < ApplicationController
   end
 
   def caption_params
-    params.require(:caption).permit(:title, :content)
+    params.require(:caption).permit(:text, :user_id, photos_attributes: [:image])
   end
 
   def require_login
