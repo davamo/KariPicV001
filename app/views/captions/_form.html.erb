@@ -1,5 +1,6 @@
 <%#= form_with(model: caption, local: true) do |form| %>
-<%= form_with(model: @caption, url: captions_path, method: :post, multipart: true) do |form| %>
+<%#= form_with(model: @caption, url: captions_path, method: :post, multipart: true) do |form| %>
+<%= form_with(model: @caption, url: captions_path, local: true) do |form| %>
 
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
@@ -21,13 +22,11 @@
   </div>
 
   <div class="field">
+    <%#= form.label :photo_id %>
+    <%#= form.file_field :photo_id, multiple: true %>
+
     <%= form.label :image %>
-   <%#= form.file_field :photo_images, multiple: true %>
-
-
-  <%= form.fields_for :photos do |photo_fields| %>
-    <%= photo_fields.file_field :image %>
-  <% end %>
+    <%= form.file_field :image, name: 'caption[photo_attributes][image]' %>
 
   </div>
 

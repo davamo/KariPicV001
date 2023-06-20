@@ -9,6 +9,7 @@ class CaptionsController < ApplicationController
 
   def show
     @caption = Caption.find(params[:id])
+    @photos = @caption.photos
   end
 
   def new
@@ -18,16 +19,35 @@ class CaptionsController < ApplicationController
   def create
     @caption = Caption.new(caption_params)
     @caption.user = current_user
+
     if @caption.save
-      redirect_to @caption, notice: 'Caption creado exitosamente.'
+      @photo = Photo.new(photo_params)
+      @photo.caption = @caption
+      if @photo.save
+        redirect_to @caption, notice: 'Leyenda y foto creadas exitosamente.'
+      else
+        # Manejo del error de guardado de la foto
+        render :new
+      end
     else
       render :new
     end
   end
 
+  def create_photo
+    @caption = Caption.find(params[:id])
+    @photo = @caption.photos.build(photo_params)
+
+    if @photo.save
+      redirect_to @caption, notice: 'La foto ha sido guardada exitosamente.'
+    else
+      # Manejo del error de guardado de la foto
+    end
+  end
+
   def update
     if @caption.update(caption_params)
-      redirect_to @caption, notice: 'caption was successfully updated.'
+      redirect_to @caption, notice: 'Caption was successfully updated.'
     else
       render :edit
     end
@@ -35,11 +55,10 @@ class CaptionsController < ApplicationController
 
   def destroy
     @caption.destroy
-    redirect_to captions_url, notice: 'caption was successfully destroyed.'
+    redirect_to captions_url, notice: 'Caption was successfully destroyed.'
   end
 
   private
-
 
   def check_admin
     unless current_user.admin?
@@ -53,12 +72,11 @@ class CaptionsController < ApplicationController
   end
 
   def caption_params
-    params.require(:caption).permit(:text, :user_id, photos_attributes: [:image])
+    params.require(:caption).permit(:text, :user_id, :photo_id)
   end
 
-  def require_login
-    unless current_user
-      redirect_to login_path, alert: 'You must be logged in to perform this action.'
-    end
+  def photo_params
+    params.require(:caption).require(:photo_attributes).permit(:image)
   end
+
 end

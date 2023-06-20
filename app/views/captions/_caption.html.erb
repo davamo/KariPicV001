@@ -1,5 +1,10 @@
 <div id="<%= dom_id caption %>">
 
+<% caption.photos.each do |photo| %>
+  <% if photo.image.attached? %>
+    <img src="<%= url_for(photo.image) %>">
+  <% end %>
+<% end %>
 
   <div class="mb-3">
     <strong>Text:</strong>
