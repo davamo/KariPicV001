@@ -1,3 +1,6 @@
+<%= link_to "+ New caption", new_caption_path, class: 'btn btn-primary btn-lg' %>
+
+
 <p style="color: green"><%= notice %></p>
 
 <h1>Captions</h1>
@@ -6,9 +9,8 @@
   <% @captions.each do |caption| %>
     <%= render caption %>
     <p>
-      <%= link_to "Show this caption", caption %>
+      <%= link_to "Show this caption", caption, class: 'btn btn-primary' %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New caption", new_caption_path %>

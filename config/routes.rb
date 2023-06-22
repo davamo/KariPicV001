@@ -11,7 +11,14 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
-  resources :captions, except: [:index]
+  resources :captions, except: [:index] do
+    resources :comments, only: [:create]
+    member do
+      patch 'update_caption' # Ruta personalizada para actualizar una leyenda específica
+    end
+  end
+
+
   root "home#index"
   get '/captions', to: 'captions#index', as: 'user_root'
 end

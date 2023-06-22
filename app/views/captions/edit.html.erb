@@ -1,3 +1,8 @@
+<div>
+  <%= link_to "Back to captions", captions_path, class: 'btn btn-success'  %>
+</div>
+
+
 <h1>Editing caption</h1>
 
 <%= render "form", caption: @caption %>
@@ -5,6 +10,5 @@
 <br>
 
 <div>
-  <%= link_to "Show this caption", @caption %> |
-  <%= link_to "Back to captions", captions_path %>
+  <%= link_to "Show this caption", @caption, class: 'btn btn-success'  %> |
 </div>

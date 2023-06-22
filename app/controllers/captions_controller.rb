@@ -1,7 +1,7 @@
 class CaptionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_admin, only: [:new, :create]
-  before_action :set_caption, only: [:show, :edit, :update, :destroy]
+  before_action :check_admin, only: [:new, :create, :update, :destroy]
+  before_action :set_caption, only: [:show, :edit]
 
   def index
     @captions = Caption.all
@@ -10,6 +10,7 @@ class CaptionsController < ApplicationController
   def show
     @caption = Caption.find(params[:id])
     @photos = @caption.photos
+    @comments = @caption.comments
   end
 
   def new
@@ -54,8 +55,12 @@ class CaptionsController < ApplicationController
   end
 
   def destroy
-    @caption.destroy
-    redirect_to captions_url, notice: 'Caption was successfully destroyed.'
+    if @caption
+      @caption.destroy
+      redirect_to captions_url, notice: 'Caption was successfully destroyed.'
+    else
+      redirect_to captions_url, alert: 'Caption not found.'
+    end
   end
 
   private

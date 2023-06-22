@@ -6,19 +6,19 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @caption = Caption.find(params[:article_id])
+    @caption = Caption.find(params[:caption_id])
     @comment = @caption.comments.build(comment_params)
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @article, notice: 'Comment was successfully created.'
+      redirect_to @caption, notice: 'Comment was successfully created.'
     else
       render 'captions/show'
     end
   end
 
   def destroy
-    @caption = @caption.comments.find(params[:id])
+    @comment = @caption.comments.find(params[:id])
 
     if @comment.user == current_user
       @comment.destroy
@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
   private
 
   def set_caption
-    @caption = Caption.find(params[:caption_id])
+    @caption =  Caption.find(params[:caption_id])
   end
 
   def comment_params
